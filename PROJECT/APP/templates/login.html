@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <i class="fa fa-viacoin" aria-hidden="true"></i>
+    <title>Login 👨‍💻</title>
+    <style>
+        h2 {
+            color: #b5b2d3;
+            text-align: center;
+             
+        }   
+        
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body style="background-color: #01011f;">
+    <h2>Login</h2>
+    <form action="" method="post">
+        {%csrf_token%}
+        <input type="text" name="firstname" id="" placeholder="Firstname" > 
+        <input type="text" name="lastname" id="" placeholder="enter lastname"><br>
+        <input type="email" name="email" id="" placeholder="enter email"><br>
+        <input type="text" name="username" id="" placeholder="username"><br>
+        <input type="password" name="password" id="" placeholder="password"><br>
+        <input type="text" name="address" id="" placeholder="address"><br>
+        <input type="number" name="phonenumber" id="" placeholder="phone number"><br>
+        <input type="number" name="experience" id="" placeholder="experience"><br>
+        <input type="number" name="salary" id="" placeholder="salary"><br>
+        <input type="submit" value="register">
+    </form>
+</body>
+</html>

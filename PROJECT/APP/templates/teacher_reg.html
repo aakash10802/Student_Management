@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register [Teacher-🧑‍🏫]</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #01011f;
+            color: #ffffff;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #1a1a2e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            color: #b5b2d3;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #6c63ff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #5548c8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <br>
+            <h2>Register [Teacher-🧑‍🏫]</h2>
+            <br>
+            
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    
+                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter firstname">
+                </div>
+                <div class="mb-3">
+                    
+                    <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Enter lastname">
+                </div>
+                <div class="mb-3">
+                    
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Enter email">
+                </div>
+                <div class="mb-3">
+                    
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                </div>
+                <div class="mb-3">
+                    
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Enter password">
+                </div>
+                <div class="mb-3">
+                    
+                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter address">
+                </div>
+                <div class="mb-3">
+                   
+                    <input type="number" class="form-control" name="phonenumber" id="phonenumber" placeholder="Enter phone number">
+                </div>
+                <div class="mb-3">
+                    
+                    <input type="number" class="form-control" name="experience" id="experience" placeholder="Enter experience">
+                </div>
+                <div class="mb-3">
+                    
+                    <input type="number" class="form-control" name="salary" id="salary" placeholder="Enter salary">
+                </div
+                ><br>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </div>
+                <br>
+            </form>
+        </div>
+    </div>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
