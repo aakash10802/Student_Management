@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth import authenticate,login,logout
+
 
 class User(AbstractUser):
     usertype=models.CharField(max_length=100)

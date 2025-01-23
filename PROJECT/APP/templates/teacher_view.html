@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% comment %} <table border="2px" style="text-align: center;">
+        <tr>
+            <th>firstname</th>
+            <th>lastname</th>
+            <th>email</th>
+            <th>address</th>
+            <th>phonenumber</th>
+            <th>salary</th>
+            <th>experience</th>
+        </tr>
+        {% for i in data %}
+        <tr>
+            <td>{{i.teacher_id.first_name}}</td>
+            <td>{{i.teacher_id.last_name}}</td>
+            <td>{{i.teacher_id.email}}</td>
+            <td>{{i.address}}</td>
+            <td>{{i.phone_number}}</td>
+            <td>{{i.salary}}</td>
+            <td>{{i.experience}}</td>
+            
+        </tr>
+        {% endfor %}
+    </table> {% endcomment %}
+    <h1>
+        welcome to teacher view
+    </h1>
+</body>
+</html>
