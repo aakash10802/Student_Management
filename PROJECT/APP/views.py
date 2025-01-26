@@ -107,6 +107,7 @@ def view_teacher_admin(request):
 def view_student_by_admin(request):
     s=Student.objects.select_related('student_id').all()
     return render(request,"student_view.html",{'data':s})
+
 def delete_student_by_admin(request,id):
     x=Student.objects.get(id=id)
     x.delete()
@@ -114,3 +115,30 @@ def delete_student_by_admin(request,id):
     z=User.objects.filter(id=y)
     z.delete()
     return redirect(view_student_by_admin)
+
+def logout_all(request):
+    logout(request)
+    return redirect(homepage)
+
+def edit_student(request):
+     x=request.session.get('student_id')
+     y=Student.objects.get(student_id_id=x)
+     z=User.objects.get(id=x)
+     return render (request,"edit_student.html",{'views':y,'data':z})
+
+def update_student(request,id):
+    if request.method=='POST':
+      q=User.objects.get(id=id)
+      p=Student.objects.get(student_id_id=q)
+      q.first_name=request.POST["firstname"]
+      q.last_name=request.POST["lastname"]
+      q.email=request.POST["email"]
+      q.username=request.POST["username"]
+      q.password=request.POST["password"]
+      print(q)
+      q.save()
+      p.address=request.POST["address"]
+      p.phone_number=request.POST["phonenumber"]
+      print(p)
+      p.save()
+      return redirect(student_home)
