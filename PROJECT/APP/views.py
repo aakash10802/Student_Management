@@ -142,3 +142,39 @@ def update_student(request,id):
       print(p)
       p.save()
       return redirect(student_home)
+
+def view_teacher_by_student(request):
+   v=Teacher.objects.select_related('teacher_id').all()
+   return render(request,'view_teacher_student.html',{'view':v})
+
+def edit_teacher(request):
+   x=request.session.get('teacher_id')
+   y=Teacher.objects.get(teacher_id_id=x)
+   z=User.objects.get(id=x)
+   return render (request,"edit_teacher.html", {'view':y ,'data':z})
+
+def update_teacher(request,id):
+   if request.method=='POST':
+      q=User.objects.get(id=id)
+      p=Teacher.objects.get(teacher_id_id=q)
+
+      q.first_name=request.POST["firstname"]
+      q.last_name=request.POST["lastname"]
+      q.email=request.POST["email"]
+      q.username=request.POST["username"]
+      q.password=request.POST["password"]
+      q.save()
+
+      p.address=request.POST["address"]
+      p.phone_number=request.POST["phonenumber"]
+      p.experience=request.POST["experience"]
+      p.salary=request.POST["salary"]
+
+      p.save()
+      return redirect(teacher_home)
+
+   
+
+def view_student_by_teacher(request):
+   s=Student.objects.select_related('student_id').all()
+   return render (request,"view_student_teacher.html",{'view':s})
