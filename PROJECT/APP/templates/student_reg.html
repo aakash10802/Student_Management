@@ -9,73 +9,83 @@
     <style>
         body {
             background-color: #08002b;
-            color:rgb(0, 0, 0);
+            color: white;
         }
-        .container{
+        .container {
             padding-top: 5vh;
         }
-       
         .form-container {
             max-width: 500px;
             margin: 50px auto;
-            background-color:rgb(32, 32, 56);
+            background-color: rgb(32, 32, 56);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         h2 {
-            color:rgb(255, 255, 255);
+            color: white;
             text-align: center;
-           
+            margin-bottom: 20px;
         }
         .btn-primary {
             background-color: #6c63ff;
             border: none;
+            width: 100%;
+            padding: 10px;
         }
         .btn-primary:hover {
             background-color: #5548c8;
         }
-        img{
+        img {
             width: 50px;
             height: 50px;
+            margin-left: 10px;
+        }
+        .form-label {
+            color: white;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
-    
     <div class="container">
         <div class="form-container">
-
-            <br>
-            <h2>Register<img src="https://firebasestorage.googleapis.com/v0/b/aakashs-c4ebb.appspot.com/o/image-removebg-preview%20(1).png?alt=media&token=5c2b8328-01c5-4c83-a2b9-ec395a56e2c6" alt=""></h2>
-            <br>
-            
+            <h2>Register <img src="https://firebasestorage.googleapis.com/v0/b/aakashs-c4ebb.appspot.com/o/image-removebg-preview%20(1).png?alt=media&token=5c2b8328-01c5-4c83-a2b9-ec395a56e2c6" alt=""></h2>
             <form method="POST" action="">
                 {% csrf_token %}
-                <label for="firstname">First Name:</label>
-                <input type="text" id="firstname" name="firstname" required>
-                
-                <label for="lastname">Last Name:</label>
-                <input type="text" id="lastname" name="lastname" required>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="address" required>
-                
-                <label for="phonenumber">Phone Number:</label>
-                <input type="text" id="phonenumber" name="phonenumber" required>
-                
-                <button type="submit">Register</button>
+                <div class="mb-3">
+                    <label for="firstname" class="form-label">First Name:</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" required>
+                </div>
+                <div class="mb-3">
+                    <label for="lastname" class="form-label">Last Name:</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address:</label>
+                    <input type="text" class="form-control" id="address" name="address" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phonenumber" class="form-label">Phone Number:</label>
+                    <input type="text" class="form-control" id="phonenumber" name="phonenumber" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
             </form>
-            
         </div>
     </div>
     <!-- Bootstrap Bundle with Popper -->

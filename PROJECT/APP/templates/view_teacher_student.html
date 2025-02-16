@@ -6,32 +6,25 @@
     <title>Document</title>
 </head>
 <body>
-    
-    <table border="2px" style="text-align: center;">
+    <table>
         <tr>
             <th>firstname</th>
             <th>lastname</th>
             <th>email</th>
             <th>address</th>
             <th>phonenumber</th>
-            <th>salary</th>
-            <th>experience</th>
+           
         </tr>
-        {% for i in data %}
+        {% for i in view %}
         <tr>
-            <td>{{i.teacher_id.first_name}}</td>
-            <td>{{i.teacher_id.last_name}}</td>
-            <td>{{i.teacher_id.email}}</td>
+            <td>{{i.student_id.first_name}}</td>
+            <td>{{i.student_id.last_name}}</td>
+            <td>{{i.student_id.email}}</td>
             <td>{{i.address}}</td>
             <td>{{i.phone_number}}</td>
-            <td>{{i.salary}}</td>
-            <td>{{i.experience}}</td>
-            
+           
         </tr>
         {% endfor %}
-    </table> 
-    <h1>
-        welcome to teacher view
-    </h1>
+    </table>
 </body>
 </html>

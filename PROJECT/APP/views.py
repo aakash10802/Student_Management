@@ -1,180 +1,197 @@
-from django.shortcuts import render, redirect,HttpResponse
-from .models import  Student,Teacher, User
-from django.contrib.auth import authenticate,login,logout
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Student, Teacher, User
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse
+
+# Homepage View
 def homepage(request):
-    return render (request,"homepage.html")
-def teacher_register(request):
-    if request.method=="POST":
-       fn=request.POST["firstname"]
-       ln=request.POST["lastname"]
-       e=request.POST["email"]
-       u=request.POST['username']
-       p=request.POST["password"]
-       a=request.POST["address"]
-       ph=request.POST["phonenumber"]
-       ex=request.POST["experience"]
-       sa=request.POST["salary"]
-       x=User.objects.create_user(first_name=fn,last_name=ln,username=u,password=p,email=e,usertype="teacher",is_active=True,is_staff=True)
-       x.save()
-       y=Teacher.objects.create(teacher_id=x,address=a,phone_number=ph,experience=ex,salary=sa)
-       y.save()
-       return redirect(login_all)
-    else:   
-        return render(request,"teacher_reg.html")
-    
+    return render(request, "homepage.html")
+
+# Student Registration
 def student_register(request):
     if request.method == "POST":
-        fn = request.POST.get("firstname")
-        ln = request.POST.get("lastname")
-        e = request.POST.get("email")
-        u = request.POST.get("username")
-        p = request.POST.get("password")
-        a = request.POST.get("address")
-        ph = request.POST.get("phonenumber")
+        fn = request.POST['firstname']
+        ln = request.POST['lastname']
+        em = request.POST['email']
+        un = request.POST['username']
+        p = request.POST['password']
+        ad = request.POST['address']
+        phn = request.POST['phonenumber']
 
-        if not all([fn, ln, e, u, p, a, ph]):
-            return HttpResponse("All fields are required", status=400)
-
-        x = User.objects.create_user(
-            first_name=fn,
-            last_name=ln,
-            username=u,
-            password=p,
-            email=e,
-            usertype="student",
-            is_active=False,
-            is_staff=False,
+        # Create a User object
+        user = User.objects.create_user(
+            first_name=fn, last_name=ln, email=em, username=un, password=p, is_active=False
         )
-        x.save()
-        y = Student.objects.create(std_id=x, address=a, ph_num=ph)
-        y.save()
 
-        return render(request, "login.html")
-    else:
-        return render(request, "student_reg.html")
+        # Create a Student object with the correct field names
+        Student.objects.create(std_id=user, address=ad, ph_num=phn)
+        return redirect("login")
 
+    return render(request, "student_reg.html")
+
+# Teacher Registration
+def teacher_register(request):
+    if request.method == "POST":
+        fn = request.POST["firstname"]
+        ln = request.POST["lastname"]
+        e = request.POST["email"]
+        u = request.POST['username']
+        p = request.POST["password"]
+        a = request.POST["address"]
+        ph = request.POST["phonenumber"]
+        ex = request.POST["experience"]
+        sa = request.POST["salary"]
+
+        # Create a User object
+        user = User.objects.create_user(
+            first_name=fn, last_name=ln, email=e, username=u, password=p, is_staff=True, is_active=True
+        )
+
+        # Create a Teacher object
+        Teacher.objects.create(teacher_id=user, address=a, phone_number=ph, experience=ex, salary=sa)
+        return redirect("login_all")
+
+    return render(request, "teacher_reg.html")
+
+# Login View
 def login_all(request):
-    if request.method=="POST":
-        u=request.POST["username"]
-        p=request.POST["password"]
-        user=authenticate(username=u,password=p)
-        if user is not None and user.is_superuser==1:
-            return redirect(adminpage)
-        elif user is not None and user.is_staff==1:
-            login(request,user)
-            request.session['teacher_id']=user.id
-            return redirect(teacher_home)
-        elif user is not None and user.is_active==1:
-            login(request,user)
-            request.session['std_id']=user.id
-            return redirect(student_home)
+    if request.method == "POST":
+        u = request.POST["username"]
+        p = request.POST["password"]
+        user = authenticate(username=u, password=p)
+        if user is not None and user.is_superuser:
+            return redirect("adminpage")
+        elif user is not None and user.is_staff:
+            login(request, user)
+            request.session['teacher_id'] = user.id
+            return redirect("teachhome")
+        elif user is not None and user.is_active:
+            login(request, user)
+            request.session['std_id'] = user.id
+            return redirect("studhome")
         else:
-            return HttpResponse("User not Approved by Admin , Contact Admin for more details")
-    
+            return HttpResponse("User not Approved by Admin, Contact Admin for more details")
     else:
-        return render(request,"login.html")
+        return render(request, "login.html")
+
+# Logout View
+def log_out_function(request):
+    logout(request)
+    return redirect("homepage")
+
 # Admin Page
 def adminpage(request):
-    return render(request,"admin.html")
+    return render(request, "admin.html")
 
 # Student Home Page
-def student_home(request):
+def student_home_page(request):
     if not request.user.is_authenticated:
-        return redirect (login_all)
-    x=get_object_or_404(Student,std_id=request.user)
-    context={
-        'firstname': x.std_id.first_name,
-        'lastname':x.std_id.last_name,
-    }
-    return render(request,"std_profile.html",context) 
+        return redirect("login")
+
+    student = get_object_or_404(Student, std_id=request.user)
+    context = {'firstname': student.std_id.first_name, 'lastname': student.std_id.last_name}
+    return render(request, "student_home.html", context)
+
 # Teacher Home Page
-def teacher_home(request):
+def teacher_home_page(request):
     if not request.user.is_authenticated:
-        return redirect(login_all)
-    y =get_object_or_404(Teacher,teacher_id=request.user)
-    context1 = {
-        'firstname': y.teacher_id.first_name,
-        'lastname':y.teacher_id.last_name,
-    }
-    return render(request,"teacher_home.html",context1)
-   
+        return redirect("login")
 
-def view_teacher_admin(request):
-    v=Teacher.objects.select_related('teacher_id').all()
-    return render(request,"teacher_view.html",{'data':v})
+    teacher = get_object_or_404(Teacher, teacher_id=request.user)
+    context = {'firstname': teacher.teacher_id.first_name, 'lastname': teacher.teacher_id.last_name}
+    return render(request, "teacher_home.html", context)
 
+# View Teachers by Admin
+def view_teacher_by_admin(request):
+    teachers = Teacher.objects.select_related('teacher_id').all()
+    return render(request, 'view_teacher.html', {'view': teachers})
+
+# View Students by Admin
 def view_student_by_admin(request):
-    s=Student.objects.select_related('student_id').all()
-    return render(request,"student_view.html",{'data':s})
+    students = Student.objects.select_related('std_id').all()
+    return render(request, "view_student.html", {'view': students})
 
-def delete_student_by_admin(request,id):
-    x=Student.objects.get(id=id)
-    x.delete()
-    y=x.std_id.id
-    z=User.objects.filter(id=y)
-    z.delete()
-    return redirect(view_student_by_admin)
+# Delete Student by Admin
+def delete_student_by_admin(request, id):
+    student = get_object_or_404(Student, id=id)
+    user_id = student.std_id.id
+    student.delete()
+    User.objects.filter(id=user_id).delete()
+    return redirect("view_student_admin")
 
-def logout_all(request):
-    logout(request)
-    return redirect(homepage)
+# Approve Student by Admin
+def approve_student_by_admin(request, id):
+    student = get_object_or_404(Student.objects.select_related('std_id'), id=id)
+    student.std_id.is_active = True
+    student.std_id.save()
+    return redirect("view_student_admin")
 
+# Edit Student
 def edit_student(request):
-     x=request.session.get('student_id')
-     y=Student.objects.get(student_id_id=x)
-     z=User.objects.get(id=x)
-     return render (request,"edit_student.html",{'views':y,'data':z})
+    student_id = request.session.get('std_id')
+    student = get_object_or_404(Student, std_id_id=student_id)
+    user = get_object_or_404(User, id=student_id)
+    return render(request, "edit_student.html", {'views': student, 'data': user})
 
-def update_student(request,id):
-    if request.method=='POST':
-      q=User.objects.get(id=id)
-      p=Student.objects.get(student_id_id=q)
-      q.first_name=request.POST["firstname"]
-      q.last_name=request.POST["lastname"]
-      q.email=request.POST["email"]
-      q.username=request.POST["username"]
-      q.password=request.POST["password"]
-      print(q)
-      q.save()
-      p.address=request.POST["address"]
-      p.phone_number=request.POST["phonenumber"]
-      print(p)
-      p.save()
-      return redirect(student_home)
+# Update Student
+def update_student(request, id):
+    if request.method == 'POST':
+        user = get_object_or_404(User, id=id)
+        student = get_object_or_404(Student, std_id=user)
 
+        user.first_name = request.POST["firstname"]
+        user.last_name = request.POST["lastname"]
+        user.email = request.POST["email"]
+        user.username = request.POST["username"]
+
+        if request.POST["password"]:
+            user.set_password(request.POST["password"])
+
+        user.save()
+
+        student.address = request.POST["address"]
+        student.ph_num = request.POST["phonenumber"]
+        student.save()
+
+        return redirect("studhome")
+
+# View Teachers by Student
 def view_teacher_by_student(request):
-   v=Teacher.objects.select_related('teacher_id').all()
-   return render(request,'view_teacher_student.html',{'view':v})
+    teachers = Teacher.objects.select_related('teacher_id').all()
+    return render(request, 'view_teacher_student.html', {'view': teachers})
 
+# Edit Teacher
 def edit_teacher(request):
-   x=request.session.get('teacher_id')
-   y=Teacher.objects.get(teacher_id_id=x)
-   z=User.objects.get(id=x)
-   return render (request,"edit_teacher.html", {'view':y ,'data':z})
+    teacher_id = request.session.get('teacher_id')
+    teacher = get_object_or_404(Teacher, teacher_id_id=teacher_id)
+    user = get_object_or_404(User, id=teacher_id)
+    return render(request, "edit_teacher.html", {'view': teacher, 'data': user})
 
-def update_teacher(request,id):
-   if request.method=='POST':
-      q=User.objects.get(id=id)
-      p=Teacher.objects.get(teacher_id_id=q)
+# Update Teacher
+def update_teacher(request, id):
+    if request.method == 'POST':
+        user = get_object_or_404(User, id=id)
+        teacher = get_object_or_404(Teacher, teacher_id=user)
 
-      q.first_name=request.POST["firstname"]
-      q.last_name=request.POST["lastname"]
-      q.email=request.POST["email"]
-      q.username=request.POST["username"]
-      q.password=request.POST["password"]
-      q.save()
+        user.first_name = request.POST["firstname"]
+        user.last_name = request.POST["lastname"]
+        user.email = request.POST["email"]
+        user.username = request.POST["username"]
 
-      p.address=request.POST["address"]
-      p.phone_number=request.POST["phonenumber"]
-      p.experience=request.POST["experience"]
-      p.salary=request.POST["salary"]
+        if request.POST["password"]:
+            user.set_password(request.POST["password"])
 
-      p.save()
-      return redirect(teacher_home)
+        user.save()
 
-   
+        teacher.address = request.POST["address"]
+        teacher.phone_number = request.POST["phonenumber"]
+        teacher.experience = request.POST["experience"]
+        teacher.salary = request.POST["salary"]
+        teacher.save()
 
+        return redirect("teachhome")
+
+# View Students by Teacher
 def view_student_by_teacher(request):
-   s=Student.objects.select_related('student_id').all()
-   return render (request,"view_student_teacher.html",{'view':s})
+    students = Student.objects.select_related('std_id').all()
+    return render(request, "view_student_teacher.html", {'view': students})
